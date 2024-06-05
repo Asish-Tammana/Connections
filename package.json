@@ -1,0 +1,15 @@
+{
+  "name": "connections-chat-application",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "backend": "nodemon backend/server.js"
+  },
+  "author": "Asish Tammana",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "nodemon": "^3.1.3"
+  }
+}
