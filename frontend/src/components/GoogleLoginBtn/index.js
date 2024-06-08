@@ -1,33 +1,36 @@
 import React from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import {jwtDecode} from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const GoogleLoginBtn = () => {
 
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
-  const handleLoginSuccess = (credentialResponse) => {
-    console.log('Google Login Success:', credentialResponse);
 
+  const getData = async (credential) => {
+    try {
+
+      const config = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+
+      const {data} = await axios.post("/users/login", { token: credential }, config)
+      localStorage.setItem("connectionsUser", JSON.stringify(data));
+      navigate("/chats")
+    } catch (error) {
+      console.error('Error fetching user:', error);
+    }
+
+  }
+
+  const handleLoginSuccess = async (credentialResponse) => {
     const { credential } = credentialResponse;
 
-
-    // Decode the ID token to get user profile details
-    const decodedToken = jwtDecode(credential);
-    console.log('Decoded Token:', decodedToken);
-
-    // Extract user information from decoded token
-    const profile = {
-      name: decodedToken.name,
-      email: decodedToken.email,
-      picture: decodedToken.picture,
-    };
-
-    console.log('Profile:', profile);
-    // Use profile information as needed
-
-    navigate("/chats")
+    getData(credential)
   };
 
   const handleLoginFailure = (error) => {
