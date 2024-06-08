@@ -11,7 +11,7 @@ const ChatScreen = () => {
     }
 
     useEffect(() => {
-        fetchChats()
+        // fetchChats()
     }, [])
 
   return (

@@ -1,12 +1,17 @@
 import React from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import {jwtDecode} from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
 const GoogleLoginBtn = () => {
+
+    const navigate = useNavigate()
+
   const handleLoginSuccess = (credentialResponse) => {
     console.log('Google Login Success:', credentialResponse);
 
     const { credential } = credentialResponse;
+
 
     // Decode the ID token to get user profile details
     const decodedToken = jwtDecode(credential);
@@ -21,6 +26,8 @@ const GoogleLoginBtn = () => {
 
     console.log('Profile:', profile);
     // Use profile information as needed
+
+    navigate("/chats")
   };
 
   const handleLoginFailure = (error) => {

@@ -5,10 +5,12 @@ import ChatScreen from './components/screens/ChatsScreen';
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" exact Component={LandingScreen} />
-      <Route path="/chats" exact Component={ChatScreen} />
-    </Routes>
+    <div className='App'>
+      <Routes>
+        <Route path="/" exact Component={LandingScreen} />
+        <Route path="/chats" exact Component={ChatScreen} />
+      </Routes>
+    </div>
   );
 }
 
