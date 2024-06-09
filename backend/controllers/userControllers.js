@@ -1,5 +1,4 @@
 const User = require("../Models/userModel");
-const jwt = require('jsonwebtoken');
 const {jwtDecode} = require('jwt-decode')
 const asyncHandler = require('express-async-handler')
 
@@ -12,11 +11,9 @@ const authUser = asyncHandler(async (req, res) => {
     
     const { name, email, picture } = decodedToken;
 
-    // Check if user exists
     let user = await User.findOne({ email });
 
     if (!user) {
-      // Create new user
       user = new User({ name, email, picture, token });
       await user.save();
     }
@@ -28,6 +25,24 @@ const authUser = asyncHandler(async (req, res) => {
     
 })
 
+const gettAllUsers = asyncHandler(async(req, res) => {
+
+  
+  const keyword = req.query.search ? {
+    $or: [
+      { name: { $regex: req.query.search, $options: 'i' } },
+      { email: { $regex: req.query.search, $options: 'i' } }
+    ]
+  } : {}
+  
+  // res.send(req.user)
+  // res.send(req.email)
+
+  const users = await User.find(keyword)
+  .find({email: {$ne: req.email}})
+  res.send(users)
+
+})
 
 
-module.exports = {authUser}
+module.exports = {authUser, gettAllUsers}

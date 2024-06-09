@@ -20,7 +20,7 @@ const GoogleLoginBtn = () => {
 
       const {data} = await axios.post("/users/login", { token: credential }, config)
       localStorage.setItem("connectionsUser", JSON.stringify(data));
-      navigate("/chats")
+      // navigate("/chats")
     } catch (error) {
       console.error('Error fetching user:', error);
     }
