@@ -34,12 +34,8 @@ const gettAllUsers = asyncHandler(async(req, res) => {
       { email: { $regex: req.query.search, $options: 'i' } }
     ]
   } : {}
-  
-  // res.send(req.user)
-  // res.send(req.email)
 
-  const users = await User.find(keyword)
-  .find({email: {$ne: req.email}})
+  const users = await User.find(keyword).find({email: {$ne: req.email}})
   res.send(users)
 
 })

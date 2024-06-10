@@ -12,7 +12,6 @@ const protect = asyncHandler(async(req, res, next) => {
             const decodedToken = jwtDecode(token);
             const {email} = decodedToken
             req.email = email
-            // req.user = await User.findOne({email}).select("-token")
             next()
 
         } catch (error) {
