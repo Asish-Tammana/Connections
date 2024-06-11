@@ -180,7 +180,31 @@ const removeFromGroup = asyncHandler(async (req, res) => {
 });
 
 const deleteGroup = asyncHandler(async (req, res) => {
-    console.log("deleteGroup")
+    
+    const {groupId} = req.body
+    let removeGroup
+
+    const user = await User.findOne({email: req.email})
+
+    const groupDetails = await Chat.findOne({_id: groupId})
+
+    if(groupDetails.groupAdmin._id.toString() === user._id.toString()) {
+        removeGroup = await Chat.findByIdAndDelete(groupId)
+    }else{
+        res.status(400)
+        throw new Error("You are not authorized to delete this group")
+    }
+
+    
+
+    if(!removeGroup){
+        res.status(400)
+        throw new Error("Group not found")
+    }else{
+        res.status(200).json("Group deleted successfully")
+    }
+
+    
 });
 
 module.exports = {
