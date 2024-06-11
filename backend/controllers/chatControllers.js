@@ -81,11 +81,63 @@ const getAllChats = asyncHandler(async (req, res) => {
 
 
 const createGroup = asyncHandler(async (req, res) => {
-    console.log("createGroup")
+
+    if(!req.body.users || !req.body.groupName){
+        res.status(400).send("Users and Group Name are required")
+        return;
+    }
+
+    const usersList = JSON.parse(req.body.users)
+    const groupName = req.body.groupName
+
+    if(usersList.length < 2){
+        res.status(400).send("Group should have at least 3 memebrers")
+    }
+
+    const user = await User.findOne({email: req.email})
+
+    usersList.push(user)
+
+    try {
+        
+        const newGroupChat = await Chat.create({
+            chatName: groupName,
+            isGroupChat: true,
+            users: usersList,
+            groupAdmin: user
+        })
+
+        const groupChat = await Chat.findOne({_id: newGroupChat._id})
+        .populate("users", "-token")
+        .populate("groupAdmin", "-token")
+
+        res.status(200).json(groupChat)
+
+    } catch (error) {
+        res.status(400)
+        throw new Error(error.message)
+    }
+
+
 });
 
 const renameGroup = asyncHandler(async (req, res) => {
     console.log("renameGroup")
+
+    const {groupChatId, newGroupName} = req.body
+
+    const updatedChat = await Chat.findByIdAndUpdate(groupChatId, {chatName: newGroupName}, {new: true})
+    .populate("users", "-token")
+    .populate("groupAdmin", "-token")
+
+    if(!updatedChat) {
+        res.status(400)
+        throw new Error("Group not found")
+    } else{
+        res.status(200).json(updatedChat)
+    }
+
+
 });
 
 const addToGroup = asyncHandler(async (req, res) => {
