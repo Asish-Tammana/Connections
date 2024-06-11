@@ -4,6 +4,7 @@ const chats = require("./data/data")
 const connectDB = require('./config/db')
 const userRoutes = require('./routes/userRoutes')
 const chatRoutes = require('./routes/chatRoutes');
+const { notFound, errorHandler } = require('./Middlewares/errorMiddleware');
 
 const app = express();
 dotenv.config();
@@ -12,6 +13,9 @@ app.use(express.json())
 
 app.use("/users", userRoutes)
 app.use("/chats", chatRoutes)
+
+app.use(notFound)
+app.use(errorHandler)
 
 const PORT  = process.env.PORT || 5000
 

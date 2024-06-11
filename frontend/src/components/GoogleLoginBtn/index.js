@@ -1,36 +1,45 @@
 import React from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
+import { login } from '../../actions/userActions';
+import {useDispatch} from 'react-redux'
 
 const GoogleLoginBtn = () => {
 
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
 
-  const getData = async (credential) => {
-    try {
+  // const getData = async (credential) => {
+  //   try {
 
-      const config = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+  //     const config = {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     }
 
-      const {data} = await axios.post("/users/login", { token: credential }, config)
-      localStorage.setItem("connectionsUser", JSON.stringify(data));
-      // navigate("/chats")
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    }
+  //     const {data} = await axios.post("/users/login", { token: credential }, config)
+  //     localStorage.setItem("connectionsUser", JSON.stringify(data));
+  //     // navigate("/chats")
+  //   } catch (error) {
+  //     console.error('Error fetching user:', error);
+  //   }
 
-  }
+  // }
 
   const handleLoginSuccess = async (credentialResponse) => {
     const { credential } = credentialResponse;
 
-    getData(credential)
+    const res = await dispatch(login(credential))
+    if(res){
+      navigate("/chats")
+    }
+
+
+    // getData(credential)
   };
 
   const handleLoginFailure = (error) => {
