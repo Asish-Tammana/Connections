@@ -122,7 +122,6 @@ const createGroup = asyncHandler(async (req, res) => {
 });
 
 const renameGroup = asyncHandler(async (req, res) => {
-    console.log("renameGroup")
 
     const { groupChatId, newGroupName } = req.body
 
