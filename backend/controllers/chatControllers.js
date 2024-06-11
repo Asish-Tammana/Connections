@@ -61,17 +61,17 @@ const getAllChats = asyncHandler(async (req, res) => {
 
     try {
         let chats = await Chat.find({
-            users: {$elemMatch: {$eq: user._id}}
+            users: { $elemMatch: { $eq: user._id } }
         }).populate('users', "-token")
-        .populate("latestMessage")
-        .populate("groupAdmin", "-token")
-        .sort({updatedAt: -1})
+            .populate("latestMessage")
+            .populate("groupAdmin", "-token")
+            .sort({ updatedAt: -1 })
 
         chats = await User.populate(chats, {
             path: "latestMessage.sender",
             select: "name email picture"
         })
-    
+
         res.status(200).json(chats)
     } catch (error) {
         throw new Error(error.message)
@@ -82,7 +82,7 @@ const getAllChats = asyncHandler(async (req, res) => {
 
 const createGroup = asyncHandler(async (req, res) => {
 
-    if(!req.body.users || !req.body.groupName){
+    if (!req.body.users || !req.body.groupName) {
         res.status(400).send("Users and Group Name are required")
         return;
     }
@@ -90,16 +90,16 @@ const createGroup = asyncHandler(async (req, res) => {
     const usersList = JSON.parse(req.body.users)
     const groupName = req.body.groupName
 
-    if(usersList.length < 2){
+    if (usersList.length < 2) {
         res.status(400).send("Group should have at least 3 memebrers")
     }
 
-    const user = await User.findOne({email: req.email})
+    const user = await User.findOne({ email: req.email })
 
     usersList.push(user)
 
     try {
-        
+
         const newGroupChat = await Chat.create({
             chatName: groupName,
             isGroupChat: true,
@@ -107,9 +107,9 @@ const createGroup = asyncHandler(async (req, res) => {
             groupAdmin: user
         })
 
-        const groupChat = await Chat.findOne({_id: newGroupChat._id})
-        .populate("users", "-token")
-        .populate("groupAdmin", "-token")
+        const groupChat = await Chat.findOne({ _id: newGroupChat._id })
+            .populate("users", "-token")
+            .populate("groupAdmin", "-token")
 
         res.status(200).json(groupChat)
 
@@ -124,16 +124,16 @@ const createGroup = asyncHandler(async (req, res) => {
 const renameGroup = asyncHandler(async (req, res) => {
     console.log("renameGroup")
 
-    const {groupChatId, newGroupName} = req.body
+    const { groupChatId, newGroupName } = req.body
 
-    const updatedChat = await Chat.findByIdAndUpdate(groupChatId, {chatName: newGroupName}, {new: true})
-    .populate("users", "-token")
-    .populate("groupAdmin", "-token")
+    const updatedChat = await Chat.findByIdAndUpdate(groupChatId, { chatName: newGroupName }, { new: true })
+        .populate("users", "-token")
+        .populate("groupAdmin", "-token")
 
-    if(!updatedChat) {
+    if (!updatedChat) {
         res.status(400)
         throw new Error("Group not found")
-    } else{
+    } else {
         res.status(200).json(updatedChat)
     }
 
@@ -141,11 +141,42 @@ const renameGroup = asyncHandler(async (req, res) => {
 });
 
 const addToGroup = asyncHandler(async (req, res) => {
-    console.log("addToGroup")
+
+    const { groupId, userId } = req.body
+
+    const addUser = await Chat.findByIdAndUpdate(groupId, {
+        $push: { users: userId }
+    },
+        { new: true })
+        .populate("users", "-token")
+        .populate("groupAdmin", "-token")
+
+    if (!addUser) {
+        res.status(400)
+        throw new Error("Group not found")
+    } else {
+        res.status(200).json(addUser)
+    }
+
+
 });
 
 const removeFromGroup = asyncHandler(async (req, res) => {
-    console.log("removeFromGroup")
+    const { groupId, userId } = req.body
+
+    const removeUser = await Chat.findByIdAndUpdate(groupId, {
+        $pull: { users: userId }
+    },
+        { new: true })
+        .populate("users", "-token")
+        .populate("groupAdmin", "-token")
+
+    if (!removeUser) {
+        res.status(400)
+        throw new Error("Group not found")
+    } else {
+        res.status(200).json(removeUser)
+    }
 });
 
 const deleteGroup = asyncHandler(async (req, res) => {
