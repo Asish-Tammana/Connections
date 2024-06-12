@@ -3,7 +3,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import { login } from '../../actions/userActions';
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 const GoogleLoginBtn = () => {
 
@@ -32,12 +32,10 @@ const GoogleLoginBtn = () => {
 
   const handleLoginSuccess = async (credentialResponse) => {
     const { credential } = credentialResponse;
+    dispatch(login(credential, navigate))
 
-    const res = await dispatch(login(credential))
-    if(res){
-      navigate("/chats")
-    }
-
+    // navigate("/chats")
+    
 
     // getData(credential)
   };

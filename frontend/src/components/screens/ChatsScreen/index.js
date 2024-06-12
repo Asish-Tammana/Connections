@@ -3,39 +3,43 @@ import axios from 'axios'
 import { useDispatch } from 'react-redux';
 import { logout } from '../../../actions/userActions';
 import { useNavigate } from 'react-router-dom';
+import { getAllChats } from '../../../actions/chatActions';
 
 const ChatScreen = () => {
 
-    const [chats, setChats] = useState([]);
+  const [chats, setChats] = useState([]);
 
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-    const fetchChats = async () => {
+  const fetchChats = () => {
 
-      const userDetails = localStorage.getItem('connectionsUser')
+    dispatch(getAllChats())
+
+    //   const userDetails = localStorage.getItem('connectionsUser')
 
 
-      const config = {
-        headers: {
-            authorization: `Bearer ${userDetails.token}`
-        }
-    }
+    //   const config = {
+    //     headers: {
+    //         authorization: `Bearer ${userDetails.token}`
+    //     }
+    // }
 
-        const {data} = await axios.get("/chats", config)
-        console.log(data)
-        setChats(data)
-    }
+    //     const {data} = await axios.get("/chats", config)
+    //     console.log(data)
+    //     setChats(data)
+  }
 
-    const handleLogout = () => {
-      dispatch(logout())
-      navigate("/")
+  const handleLogout = () => {
+    dispatch(logout())
+    navigate("/")
 
-    }
+  }
 
-    useEffect(() => {
-        // fetchChats()
-    }, [])
+  useEffect(() => {
+    fetchChats()
+
+  }, [dispatch])
 
   return (
     <div>
