@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import { useDispatch } from 'react-redux';
 import { logout } from '../../../actions/userActions';
 import { useNavigate } from 'react-router-dom';
 import { getAllChats } from '../../../actions/chatActions';
+import SideDrawer from '../../SideDrawer';
+import MyChats from '../../MyChats';
+import ChatBox from '../../ChatBox';
+import { Box, Container, Typography } from '@mui/material';
+
 
 const ChatScreen = () => {
 
@@ -12,40 +16,24 @@ const ChatScreen = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const fetchChats = () => {
-
-    dispatch(getAllChats())
-
-    //   const userDetails = localStorage.getItem('connectionsUser')
-
-
-    //   const config = {
-    //     headers: {
-    //         authorization: `Bearer ${userDetails.token}`
-    //     }
-    // }
-
-    //     const {data} = await axios.get("/chats", config)
-    //     console.log(data)
-    //     setChats(data)
-  }
 
   const handleLogout = () => {
-    dispatch(logout())
-    navigate("/")
-
+    dispatch(logout(navigate))
   }
 
   useEffect(() => {
-    fetchChats()
+    dispatch(getAllChats())
 
-  }, [dispatch])
+  }, [dispatch, navigate])
 
   return (
-    <div>
-      <h1>ChatScreen</h1>
-      <button onClick={handleLogout}>logout</button>
-    </div>
+    <Box sx={{width: '100%'}}>
+      <SideDrawer />
+      <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+        <MyChats />
+        <ChatBox />
+      </Box>
+    </Box>
   )
 }
 
