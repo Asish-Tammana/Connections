@@ -35,7 +35,7 @@ const gettAllUsers = asyncHandler(async(req, res) => {
     ]
   } : {}
 
-  const users = await User.find(keyword).find({email: {$ne: req.email}})
+  const users = await User.find(keyword).find({email: {$ne: req.email}}).select("-token")
   res.send(users)
 
 })
