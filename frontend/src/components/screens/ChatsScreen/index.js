@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { logout } from '../../../actions/userActions';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getAllChats } from '../../../actions/chatActions';
-import SideDrawer from '../../SideDrawer';
 import MyChats from '../../MyChats';
 import ChatBox from '../../ChatBox';
-import { Box, Container, Typography } from '@mui/material';
+import { Box } from '@mui/material';
+import Header from '../../Header';
 
 
 const ChatScreen = () => {
 
-  const [chats, setChats] = useState([]);
+  // const [chats, setChats] = useState([]);
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
-
-  const handleLogout = () => {
-    dispatch(logout(navigate))
-  }
+  const userChats = useSelector(state => state.userChats)
+  console.log(userChats)
+  
 
   useEffect(() => {
     dispatch(getAllChats())
@@ -28,7 +25,7 @@ const ChatScreen = () => {
 
   return (
     <Box sx={{width: '100%'}}>
-      <SideDrawer />
+      <Header />
       <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
         <MyChats />
         <ChatBox />
