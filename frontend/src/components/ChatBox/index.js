@@ -1,11 +1,11 @@
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import React from 'react'
 
 const ChatBox = () => {
   return (
-    <div>
+    <Box sx={{width: '70%'}}>
       <Typography>Chat Box</Typography>
-    </div>
+    </Box>
   )
 }
 
