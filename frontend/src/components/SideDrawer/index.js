@@ -8,17 +8,18 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
-import { TextField, Typography } from '@mui/material';
+import { TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllUsers } from '../../actions/userActions';
 
 const SideDrawer = () => {
   const [open, setOpen] = useState(false);
   const [userInput, setUserInput] = useState('');
-  const [userList, setUserList] = useState([]);
 
-  const fetchUsersList = () => {
-    
-  }
+  const dispatch = useDispatch()
+  const usersList = useSelector(state => state.usersList)
+  const {allUsersList} = usersList;
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -28,12 +29,24 @@ const SideDrawer = () => {
     <Box sx={{ width: 250, p:1, pt: 2 }} role="presentation">
       <TextField id="outlined-basic" label="Search User" variant="outlined" value={userInput} onChange={(e) => setUserInput(e.target.value)} />
       <Divider />
+      {(userInput !== '' && allUsersList) && <List>
+        {allUsersList?.map((user) =>(
+          <ListItem key={user._id}>
+            <ListItemButton>
+              <ListItemIcon>
+                <PersonSearchIcon />
+              </ListItemIcon>
+              <ListItemText primary={user.name} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+        </List>}
     </Box>
   );
 
   useEffect(() => {
-    fetchUsersList();
-  }, [userInput])
+    dispatch(getAllUsers(userInput))
+  }, [userInput, dispatch])
 
   return (
     <div>
