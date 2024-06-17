@@ -16,3 +16,4 @@ export const getAllChats = () => async (dispatch, getState) => {
     dispatch({type: USER_CHATS_SUCCESS, payload: data})
 
 }
+

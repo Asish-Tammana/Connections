@@ -25,6 +25,10 @@ const SideDrawer = () => {
     setOpen(newOpen);
   };
 
+  const selectUser = (user) => {
+    console.log(user)
+  }
+
   const DrawerList = (
     <Box sx={{ width: 250, p:1, pt: 2 }} role="presentation">
       <TextField id="outlined-basic" label="Search User" variant="outlined" value={userInput} onChange={(e) => setUserInput(e.target.value)} />
@@ -32,7 +36,7 @@ const SideDrawer = () => {
       {(userInput !== '' && allUsersList) && <List>
         {allUsersList?.map((user) =>(
           <ListItem key={user._id}>
-            <ListItemButton>
+            <ListItemButton onClick={() => selectUser(user)}>
               <ListItemIcon>
                 <PersonSearchIcon />
               </ListItemIcon>

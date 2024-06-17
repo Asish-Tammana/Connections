@@ -9,23 +9,36 @@ const MyChats = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const userChats = useSelector(state => state.userChats)
+  const userLogin = useSelector(state => state.userLogin)
+  const {userInfo} = userLogin
+  const {chats} = userChats
+
   useEffect(() => {
     dispatch(getAllChats())
 
   }, [dispatch, navigate])
 
-  const userChats = useSelector(state => state.userChats)
-  const {chats} = userChats
+  
 
   return (
     <Box sx={{width: '30%'}}>
       <Typography>My Chats</Typography>
       <List>
-        {chats?.map(eachChat =>(
+        {chats?.map(eachChat =>{
+          
+          let chatName = eachChat.chatName
+
+          if(eachChat.isGroupChat === false){
+            chatName = eachChat.users[0]._id === userInfo._id ? eachChat.users[1].name : eachChat.users[0].name
+          }
+          
+          return(
           <ListItem key={eachChat._id}>
-            <ListItemText primary={eachChat.chatName} />
+            <ListItemText primary={chatName} />
           </ListItem>
-        ))}
+        )}
+        )}
       </List>
     </Box>
   )
