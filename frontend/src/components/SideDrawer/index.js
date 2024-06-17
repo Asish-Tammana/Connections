@@ -12,6 +12,7 @@ import { TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllUsers } from '../../actions/userActions';
+import { createNewChat } from '../../actions/chatActions';
 
 const SideDrawer = () => {
   const [open, setOpen] = useState(false);
@@ -25,8 +26,8 @@ const SideDrawer = () => {
     setOpen(newOpen);
   };
 
-  const selectUser = (user) => {
-    console.log(user)
+  const selectUser = (userId) => {
+    dispatch(createNewChat(userId))
   }
 
   const DrawerList = (
@@ -36,7 +37,7 @@ const SideDrawer = () => {
       {(userInput !== '' && allUsersList) && <List>
         {allUsersList?.map((user) =>(
           <ListItem key={user._id}>
-            <ListItemButton onClick={() => selectUser(user)}>
+            <ListItemButton onClick={() => selectUser(user._id)}>
               <ListItemIcon>
                 <PersonSearchIcon />
               </ListItemIcon>

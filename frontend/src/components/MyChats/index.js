@@ -1,4 +1,4 @@
-import { Box, List, ListItem, ListItemText, Typography } from '@mui/material'
+import { Box, List, ListItem, ListItemText, Typography, ListItemButton } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -35,7 +35,11 @@ const MyChats = () => {
           
           return(
           <ListItem key={eachChat._id}>
-            <ListItemText primary={chatName} />
+            <ListItemButton onClick={
+              () => navigate(`/chats/${eachChat._id}`)
+            }>
+              <ListItemText primary={chatName} />
+            </ListItemButton>
           </ListItem>
         )}
         )}

@@ -9,6 +9,7 @@ const App = () => {
       <Routes>
         <Route path="/" exact Component={LandingScreen} />
         <Route path="/chats" exact Component={ChatScreen} />
+        <Route path="/chats/:id" exact Component={ChatScreen} />
       </Routes>
     </div>
   );
