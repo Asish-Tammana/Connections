@@ -33,7 +33,7 @@ const ProfileModal = () => {
 
     return (
         <div>
-            <Button onClick={handleOpen}>Open modal</Button>
+            <Button onClick={handleOpen}>Profile</Button>
             <Modal
                 open={open}
                 onClose={handleClose}
