@@ -83,20 +83,21 @@ const getAllChats = asyncHandler(async (req, res) => {
 const createGroup = asyncHandler(async (req, res) => {
 
     if (!req.body.users || !req.body.groupName) {
-        res.status(400).send("Users and Group Name are required")
+        throw new Error("Users and Group Name are required")
         return;
     }
 
-    const usersList = JSON.parse(req.body.users)
+    
+    const usersList = req.body.users
     const groupName = req.body.groupName
 
     if (usersList.length < 2) {
-        res.status(400).send("Group should have at least 3 memebrers")
+        throw new Error("Group should have at least 3 memebrers")
     }
 
     const user = await User.findOne({ email: req.email })
 
-    usersList.push(user)
+    usersList.push(user._id)
 
     try {
 
@@ -114,6 +115,7 @@ const createGroup = asyncHandler(async (req, res) => {
         res.status(200).json(groupChat)
 
     } catch (error) {
+        // console.log(error)
         res.status(400)
         throw new Error(error.message)
     }

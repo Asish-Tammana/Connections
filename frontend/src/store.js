@@ -2,7 +2,7 @@ import {legacy_createStore as createStore, combineReducers, applyMiddleware} fro
 import {thunk} from 'redux-thunk'
 import { composeWithDevTools } from '@redux-devtools/extension';
 import { allUsersReducer, userLoginReducer } from './reducers/userReducers'
-import { userChatsReducer } from './reducers/chatReducer'
+import { groupReducer, userChatsReducer } from './reducers/chatReducer'
 
 
 const userInfoFromStorage = localStorage.getItem('connectionsUser')? JSON.parse(localStorage.getItem('connectionsUser')) : null
@@ -15,7 +15,8 @@ const initialState = {
 const reducers = combineReducers({
     userLogin: userLoginReducer,
     userChats: userChatsReducer,
-    usersList : allUsersReducer
+    usersList : allUsersReducer,
+    newGroup: groupReducer
 })
 
 const middlewares = [thunk]

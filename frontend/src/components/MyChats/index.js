@@ -1,8 +1,9 @@
-import { Box, List, ListItem, ListItemText, Typography, ListItemButton, Button } from '@mui/material'
+import { Box, List, ListItem, ListItemText, Typography, ListItemButton } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getAllChats } from '../../actions/chatActions'
+import NewGroupModal from '../NewGroupModal'
 
 const MyChats = () => {
 
@@ -25,7 +26,7 @@ const MyChats = () => {
     <Box sx={{ width: '30%' }}>
       <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
         <Typography>My Chats</Typography>
-        <Button>New Group</Button>
+        <NewGroupModal />
       </Box>
       <List>
         {chats?.map(eachChat => {
