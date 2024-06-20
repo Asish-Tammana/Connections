@@ -123,6 +123,22 @@ const createGroup = asyncHandler(async (req, res) => {
 
 });
 
+const updateGroup = asyncHandler(async (req, res) => {
+
+    const {groupChatId, newGroupName, newGroupUsers} = req.body
+
+    const updatedChat = await Chat.findByIdAndUpdate(groupChatId, { users: newGroupUsers, chatName: newGroupName }, { new: true })
+       .populate("users", "-token")
+       .populate("groupAdmin", "-token")
+
+    if (!updatedChat) {
+        res.status(400)
+        throw new Error("Group not found")
+    } else {
+        res.status(200).json(updatedChat)
+    }
+})
+
 const renameGroup = asyncHandler(async (req, res) => {
 
     const { groupChatId, newGroupName } = req.body
@@ -209,5 +225,5 @@ const deleteGroup = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-    getAllChats, accessChat, createGroup, renameGroup, addToGroup, removeFromGroup, deleteGroup
+    getAllChats, accessChat, createGroup,updateGroup, renameGroup, addToGroup, removeFromGroup, deleteGroup
 }
