@@ -4,7 +4,7 @@ import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateGroup } from '../../actions/chatActions';
+import { updateGroupAction } from '../../actions/chatActions';
 import { useNavigate } from 'react-router-dom';
 
 const style = {
@@ -24,7 +24,11 @@ const UpdateGroupModal = () => {
     const { allUsersList } = usersList;
 
     const userChats = useSelector(state => state.userChats)
-    const { error, chats } = userChats
+    const { chats } = userChats
+
+    const updateGroup = useSelector(state => state.updateGroup)
+    const {error} = updateGroup
+
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -59,7 +63,7 @@ const UpdateGroupModal = () => {
 
     const updateGroupDetails = async() => {
         const usersList = groupMembers.map(member => member._id)
-        const res = await dispatch(updateGroup(groupId, groupchatName, usersList, navigate))
+        const res = await dispatch(updateGroupAction(groupId, groupchatName, usersList, navigate))
         if(res){
             handleClose()
         }
