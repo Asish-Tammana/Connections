@@ -33,10 +33,11 @@ const UpdateGroupModal = () => {
 
     useEffect(() => {
         const chatId = window.location.pathname.split('/').reverse()[0]
-        const currentGroup = chats?.find(chat => chat._id === chatId)
-
-        chats && setGroupChatName(currentGroup.chatName)
-        chats && setGroupMembers(currentGroup.users)
+        if (chatId !== "chats") {
+            const currentGroup = chats?.find(chat => chat._id === chatId)
+            chats && setGroupChatName(currentGroup.chatName)
+            chats && setGroupMembers(currentGroup.users)
+        }
     }, [open, chats])
 
     const handleOpen = () => setOpen(true);
