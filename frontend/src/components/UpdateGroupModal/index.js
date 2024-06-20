@@ -3,7 +3,9 @@ import { Box, Button, List, ListItem, ListItemButton, ListItemIcon, ListItemText
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateGroup } from '../../actions/chatActions';
+import { useNavigate } from 'react-router-dom';
 
 const style = {
     position: 'absolute',
@@ -24,9 +26,13 @@ const UpdateGroupModal = () => {
     const userChats = useSelector(state => state.userChats)
     const { error, chats } = userChats
 
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
 
 
     const [open, setOpen] = useState(false);
+    const [groupId, setGroupId] = useState('');
     const [groupchatName, setGroupChatName] = useState("");
     const [userSearchInput, setUserSearchInput] = useState('');
     const [groupMembers, setGroupMembers] = useState([]);
@@ -35,6 +41,7 @@ const UpdateGroupModal = () => {
         const chatId = window.location.pathname.split('/').reverse()[0]
         if (chatId !== "chats") {
             const currentGroup = chats?.find(chat => chat._id === chatId)
+            chats && setGroupId(chatId)
             chats && setGroupChatName(currentGroup.chatName)
             chats && setGroupMembers(currentGroup.users)
         }
@@ -43,12 +50,20 @@ const UpdateGroupModal = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false)
-        // setUserSearchInput("")
     };
 
     const userSelected = (user) => {
         setGroupMembers([...groupMembers, user])
         setUserSearchInput("")
+    }
+
+    const updateGroupDetails = async() => {
+        const usersList = groupMembers.map(member => member._id)
+        const res = await dispatch(updateGroup(groupId, groupchatName, usersList, navigate))
+        if(res){
+            handleClose()
+        }
+
     }
 
     const handleDelete = (id) => {
@@ -77,7 +92,7 @@ const UpdateGroupModal = () => {
                     </Stack>
                     }
 
-                    <Button>Update Group</Button>
+                    <Button onClick={updateGroupDetails}>Update Group Details</Button>
 
                     {(userSearchInput !== '' && allUsersList) && <List>
                         {allUsersList?.map((user) => (

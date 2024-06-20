@@ -67,3 +67,30 @@ export const createNewGroup = (groupName, users, navigate) => async (dispatch, g
     }
 
 }
+
+export const updateGroup = (groupId, groupName, usersList, navigate) => async (dispatch, getState) => {
+    const { userLogin: { userInfo } } = getState()
+    const { userChats } = getState()
+    const { chats } = userChats
+    const config = {
+        headers: {
+            authorization: `Bearer ${userInfo.token}`
+        }
+    }
+
+    const { data } = await axios.put(`/chats/group/update`, { groupChatId: groupId, newGroupName: groupName, newGroupUsers: usersList }, config)
+
+    if(data){
+
+        const updatedChats = chats.map(eachChat => eachChat._id === data._id ? data : eachChat)
+        dispatch({ type: USER_CHATS_SUCCESS, payload: updatedChats })
+        navigate(`/chats/${data._id}`)
+        return true
+    }
+
+    // if (chats.find(ch => ch._id !== data._id)) {
+    //     dispatch({ type: NEW_CHAT_SUCCESS, payload: data })
+    //     return true
+    // }
+
+}
