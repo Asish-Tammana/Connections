@@ -127,6 +127,22 @@ const updateGroup = asyncHandler(async (req, res) => {
 
     const {groupChatId, newGroupName, newGroupUsers} = req.body
 
+    if(!groupChatId){
+        res.status(400)
+        throw new Error("Cannot access the chat")
+        return;
+    }
+
+    if (!newGroupUsers || !newGroupName) {
+        throw new Error("Users and Group Name are required")
+        return;
+    }
+
+    if (newGroupUsers.length < 2) {
+        throw new Error("Group should have at least 3 memebrers")
+        return;
+    }
+
     const updatedChat = await Chat.findByIdAndUpdate(groupChatId, { users: newGroupUsers, chatName: newGroupName }, { new: true })
        .populate("users", "-token")
        .populate("groupAdmin", "-token")
