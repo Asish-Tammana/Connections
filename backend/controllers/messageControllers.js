@@ -9,9 +9,9 @@ const sendMessage = asyncHandler(async (req, res) => {
 
     const user = await User.findOne({ email: req.email })
 
-    const {messageContent, chatId} = req.body;
+    const { messageContent, chatId } = req.body;
 
-    if(!messageContent || !chatId){
+    if (!messageContent || !chatId) {
         throw new Error("Invalid message content")
         return;
     }
@@ -27,11 +27,11 @@ const sendMessage = asyncHandler(async (req, res) => {
     try {
 
         let message = await Message.create(newMessage)
-        
+
         message = await message.populate("sender", "name picture")
         message = await message.populate("chat")
 
-        message = await  User.populate(message, {
+        message = await User.populate(message, {
             path: "chat.users",
             select: "name email picture"
         })
@@ -42,7 +42,7 @@ const sendMessage = asyncHandler(async (req, res) => {
 
         res.json(message)
 
-        
+
     } catch (error) {
         res.status(400)
         throw new Error(error.message)
@@ -50,4 +50,27 @@ const sendMessage = asyncHandler(async (req, res) => {
 
 })
 
-module.exports = {sendMessage}
+const getAllMessages = asyncHandler(async (req, res) => {
+
+    try {
+        const { chatId } = req.params;
+
+        const cryptr = new Cryptr(chatId);
+
+        const messages = await Message.find({ chat: chatId })
+            .populate("sender", "name picture email")
+            .populate("chat")
+
+        messages.forEach(message => {
+            message.content = cryptr.decrypt(message.content);
+        });
+            
+        res.json(messages) 
+    } catch (error) {
+        res.status(400)
+        throw new Error(error.message)
+    }
+
+})
+
+module.exports = { sendMessage, getAllMessages }
