@@ -64,7 +64,7 @@ const getAllMessages = asyncHandler(async (req, res) => {
         messages.forEach(message => {
             message.content = cryptr.decrypt(message.content);
         });
-            
+
         res.json(messages) 
     } catch (error) {
         res.status(400)

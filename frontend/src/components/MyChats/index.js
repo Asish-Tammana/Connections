@@ -40,8 +40,8 @@ const MyChats = ({chatId}) => {
           }
 
           return (
-            <ListItem key={eachChat._id} sx={highlight}>
-              <ListItemButton onClick={
+            <ListItem key={eachChat._id}>
+              <ListItemButton sx={highlight} onClick={
                 () => navigate(`/chats/${eachChat._id}`)
               }>
                 <ListItemText primary={chatName} />

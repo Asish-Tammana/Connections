@@ -16,6 +16,7 @@ export const sendNewMessage = (messageContent, chatId) => async (dispatch, getSt
         }
         const { data } = await axios.post(`/messages`, { messageContent, chatId }, config)
         dispatch({ type: SEND_MESSAGE_SUCCESS, payload: data })
+        return data
     } catch (error) {
         dispatch({
             type: SEND_MESSAGE_FAIL,

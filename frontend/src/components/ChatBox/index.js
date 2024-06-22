@@ -17,10 +17,12 @@ const ChatBox = ({ chatId }) => {
 
   const dispatch = useDispatch()
 
-  const sendMessageToReceiver = (e) => {
+  const sendMessageToReceiver = async(e) => {
     e.preventDefault();
 
-    dispatch(sendNewMessage(userMessage, chatId))
+    const newMsg = await dispatch(sendNewMessage(userMessage, chatId))
+    newMsg.content = userMessage;
+    messagesList.push(newMsg)
     setUserMessage('')
   }
 
