@@ -13,7 +13,7 @@ const ChatScreen = () => {
     <Box sx={{width: '100%'}}>
       <Header />
       <Box sx={{display: 'flex', justifyContent: 'space-between', width: '100%', minHeight: '90%'}}>
-        <MyChats />
+        <MyChats chatId={chatId} />
         {(chatId !== "chats") ? <ChatBox chatId={chatId} />: <div><h1>Open any chat</h1></div>}
       </Box>
     </Box>

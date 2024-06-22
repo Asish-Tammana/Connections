@@ -4,30 +4,30 @@ import UpdateGroupModal from '../UpdateGroupModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { getMessages, sendNewMessage } from '../../actions/messageActions'
 
-const ChatBox = ({chatId}) => {
+const ChatBox = ({ chatId }) => {
 
   const [userMessage, setUserMessage] = useState('');
 
-  const chatMessages = useSelector(state => state.chatMessages)
   const userLogin = useSelector(state => state.userLogin)
   const { userInfo } = userLogin;
-  const {messagesList} = chatMessages;
+
+  const chatMessages = useSelector(state => state.chatMessages)
+  const { messagesList } = chatMessages;
+  
 
   const dispatch = useDispatch()
 
   const sendMessageToReceiver = (e) => {
     e.preventDefault();
-    
-    
+
     dispatch(sendNewMessage(userMessage, chatId))
     setUserMessage('')
   }
 
   useEffect(() => {
-
     dispatch(getMessages(chatId))
-
   }, [chatId, dispatch])
+
 
   return (
     <Box sx={{ width: '70%', p: 1 }}>
@@ -36,27 +36,19 @@ const ChatBox = ({chatId}) => {
         <UpdateGroupModal />
       </Box>
       <Box sx={{ height: '90%', backgroundColor: 'pink', display: 'flex', flexDirection: 'column-reverse' }}>
-        <form onSubmit={sendMessageToReceiver} style={{ display: 'flex', justifyContent: 'space-between', width: '100%', height: '7%'  }}>
-            <input type="text" value={userMessage} onChange={(e) => setUserMessage(e.target.value)} />
-            <button type="submit">Send</button>
+        <form onSubmit={sendMessageToReceiver} style={{ display: 'flex', justifyContent: 'space-between', width: '100%', height: '7%' }}>
+          <input type="text" value={userMessage} onChange={(e) => setUserMessage(e.target.value)} />
+          <button type="submit">Send</button>
         </form>
 
-        <Box sx={{height: '93%', display: 'flex', flexDirection: 'column',}}>
+        <Box sx={{ height: '93%', display: 'flex', flexDirection: 'column', overflowY: 'scroll', scrollbarWidth: 'none' }}>
           {messagesList?.map(message => {
-            if(message.sender._id === userInfo._id){
-              return (
-                <Typography key={message._id} style={{textAlign: 'right'}}>{message.content}</Typography>
-              )
-            }else{
-              return (
-                <Typography key={message._id} style={{textAlign: 'left'}}>{message.content}</Typography>
-              )
-            }
+            const direction = message.sender._id === userInfo._id ? 'right' : 'left';
+            return (
+              <Typography key={message._id} style={{ textAlign: direction }}>{message.content}</Typography>
+            )
           })}
         </Box>
-
-        
-
       </Box>
     </Box>
   )

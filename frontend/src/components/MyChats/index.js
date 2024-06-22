@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { getAllChats } from '../../actions/chatActions'
 import NewGroupModal from '../NewGroupModal'
 
-const MyChats = () => {
+const MyChats = ({chatId}) => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -33,12 +33,14 @@ const MyChats = () => {
 
           let chatName = eachChat.chatName
 
+          const highlight = chatId === eachChat._id && {backgroundColor: 'lightBlue'}
+
           if (eachChat.isGroupChat === false) {
             chatName = eachChat.users[0]._id === userInfo._id ? eachChat.users[1].name : eachChat.users[0].name
           }
 
           return (
-            <ListItem key={eachChat._id}>
+            <ListItem key={eachChat._id} sx={highlight}>
               <ListItemButton onClick={
                 () => navigate(`/chats/${eachChat._id}`)
               }>
