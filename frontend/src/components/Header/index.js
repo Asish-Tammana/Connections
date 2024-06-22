@@ -6,11 +6,10 @@ import ProfileModal from '../ProfileModal'
 const Header = () => {
 
   return (
-    <Box sx={{display: 'flex', justifyContent: 'space-around' }}>
-        <SideDrawer />
+    <Box sx={{ display: 'flex', justifyContent: 'space-around', height: '10%' }}>
+      <SideDrawer />
       <Typography>Header</Typography>
       <ProfileModal />
-      
     </Box>
   )
 }

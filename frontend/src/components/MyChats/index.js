@@ -18,7 +18,7 @@ const MyChats = () => {
   useEffect(() => {
     dispatch(getAllChats())
 
-  }, [dispatch, navigate])
+  }, [dispatch])
 
 
 

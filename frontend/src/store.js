@@ -3,7 +3,7 @@ import {thunk} from 'redux-thunk'
 import { composeWithDevTools } from '@redux-devtools/extension';
 import { allUsersReducer, userLoginReducer } from './reducers/userReducers'
 import { groupReducer, updateGroupReducer, userChatsReducer } from './reducers/chatReducer'
-
+import { getChatMessageReducer, sendMessageReducer } from './reducers/messageReducer';
 
 const userInfoFromStorage = localStorage.getItem('connectionsUser')? JSON.parse(localStorage.getItem('connectionsUser')) : null
 
@@ -17,7 +17,9 @@ const reducers = combineReducers({
     userChats: userChatsReducer,
     usersList : allUsersReducer,
     newGroup: groupReducer,
-    updateGroup: updateGroupReducer
+    updateGroup: updateGroupReducer,
+    sendMessageReducer: sendMessageReducer,
+    getChatMessages: getChatMessageReducer
 })
 
 const middlewares = [thunk]
