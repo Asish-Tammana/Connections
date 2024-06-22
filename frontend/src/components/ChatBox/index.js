@@ -1,13 +1,18 @@
-import { Box, Button, FormControl, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import UpdateGroupModal from '../UpdateGroupModal'
-import { Form } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getMessages, sendNewMessage } from '../../actions/messageActions'
 
 const ChatBox = ({chatId}) => {
 
   const [userMessage, setUserMessage] = useState('');
+
+  const chatMessages = useSelector(state => state.chatMessages)
+  const userLogin = useSelector(state => state.userLogin)
+  const { userInfo } = userLogin;
+  const {messagesList} = chatMessages;
+
   const dispatch = useDispatch()
 
   const sendMessageToReceiver = (e) => {
@@ -35,6 +40,20 @@ const ChatBox = ({chatId}) => {
             <input type="text" value={userMessage} onChange={(e) => setUserMessage(e.target.value)} />
             <button type="submit">Send</button>
         </form>
+
+        <Box sx={{height: '93%', display: 'flex', flexDirection: 'column',}}>
+          {messagesList?.map(message => {
+            if(message.sender._id === userInfo._id){
+              return (
+                <Typography key={message._id} style={{textAlign: 'right'}}>{message.content}</Typography>
+              )
+            }else{
+              return (
+                <Typography key={message._id} style={{textAlign: 'left'}}>{message.content}</Typography>
+              )
+            }
+          })}
+        </Box>
 
         
 

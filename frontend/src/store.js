@@ -19,7 +19,7 @@ const reducers = combineReducers({
     newGroup: groupReducer,
     updateGroup: updateGroupReducer,
     sendMessageReducer: sendMessageReducer,
-    getChatMessages: getChatMessageReducer
+    chatMessages: getChatMessageReducer
 })
 
 const middlewares = [thunk]
