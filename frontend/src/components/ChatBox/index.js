@@ -3,13 +3,23 @@ import React, { useEffect, useState } from 'react'
 import UpdateGroupModal from '../UpdateGroupModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { getMessages, sendNewMessage } from '../../actions/messageActions'
+import io from 'socket.io-client'
+
+const ENDPOINT = "http://localhost:5000"
+var socket, chatComapare
 
 const ChatBox = ({ chatId }) => {
 
   const [userMessage, setUserMessage] = useState('');
+  const [selectedChat, setSelectedChat] = useState({});
+  const [socketConnected, setSocketConnected] = useState(false);
+
 
   const userLogin = useSelector(state => state.userLogin)
   const { userInfo } = userLogin;
+
+  const userChats = useSelector(state => state.userChats)
+  const { chats } = userChats;
 
   const chatMessages = useSelector(state => state.chatMessages)
   const { messagesList } = chatMessages;
@@ -26,8 +36,25 @@ const ChatBox = ({ chatId }) => {
     setUserMessage('')
   }
 
-  useEffect(() => {
+  const getMessagesFromDatabase = () => {
     dispatch(getMessages(chatId))
+    socket.emit("join chat", chatId)
+  }
+
+
+  useEffect(() => {
+    
+    socket = io(ENDPOINT)
+    socket.emit("setup", userInfo)
+    socket.on("connection", () => {
+      setSocketConnected(true)
+    })
+  },[])
+
+  useEffect(() => {
+    getMessagesFromDatabase()
+    chatComapare = chats?.filter(chat => chat._id === chatId)[0]
+
   }, [chatId, dispatch])
 
 
@@ -50,9 +77,9 @@ const ChatBox = ({ chatId }) => {
               return <Typography key={message._id} sx={{m:1}} style={{ textAlign: direction }}>{message.content}</Typography>
             } else {
               return (
-                <Box sx={{display: 'flex', m:1}}>
+                <Box sx={{display: 'flex', m:1}}  key={message._id}>
                   {direction === 'left' && <img src={message.sender.picture} alt={message.sender.name} style={{ height: '30px', width: '30px' }} />}
-                  <Typography key={message._id} style={{ textAlign: direction }}>{message.content}</Typography>
+                  <Typography style={{ textAlign: direction }}>{message.content}</Typography>
                 </Box>
               )
             }
