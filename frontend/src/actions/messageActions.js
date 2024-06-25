@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_MESSAGES_FAIL, GET_MESSAGES_REQUEST, GET_MESSAGES_SUCCESS, SEND_MESSAGE_FAIL, SEND_MESSAGE_REQUEST, SEND_MESSAGE_SUCCESS } from '../constants/messageConstants';
+import { ADD_MESSAGE_SUCCESS, GET_MESSAGES_FAIL, GET_MESSAGES_REQUEST, GET_MESSAGES_SUCCESS, SEND_MESSAGE_FAIL, SEND_MESSAGE_REQUEST, SEND_MESSAGE_SUCCESS } from '../constants/messageConstants';
 
 export const sendNewMessage = (messageContent, chatId) => async (dispatch, getState) => {
 
@@ -16,6 +16,7 @@ export const sendNewMessage = (messageContent, chatId) => async (dispatch, getSt
         }
         const { data } = await axios.post(`/messages`, { messageContent, chatId }, config)
         dispatch({ type: SEND_MESSAGE_SUCCESS, payload: data })
+        dispatch({type: ADD_MESSAGE_SUCCESS, payload: data})
         return data
     } catch (error) {
         dispatch({

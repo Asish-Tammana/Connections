@@ -47,4 +47,16 @@ io.on('connection', (socket) => {
         console.log(chatId, "chat activated")
     })
 
+    socket.on("new message", (newMessageReceived) => {
+
+        var chat = newMessageReceived.chat
+
+        if(!chat.users) return console.log("no users available")
+        
+        chat.users.forEach(user => {
+            socket.in(user._id).emit("message received", newMessageReceived)
+        })
+
+    })
+
 })
