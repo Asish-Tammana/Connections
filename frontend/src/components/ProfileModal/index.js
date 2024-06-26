@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { logout } from '../../actions/userActions'
 
@@ -17,6 +17,11 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+
 };
 
 const ProfileModal = () => {
@@ -26,6 +31,9 @@ const ProfileModal = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
 
     const handleLogout = () => {
         dispatch(logout(navigate))
@@ -41,13 +49,18 @@ const ProfileModal = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Profle Name
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Profile Email Address
-                    </Typography>
-                    <Button onClick={handleLogout}>Logout</Button>
+                    <Box>
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                            {userInfo.name}
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                            {userInfo.email}
+                        </Typography>
+                        <Button onClick={handleLogout}>Logout</Button>
+                    </Box>
+                    <Box>
+                        <img src={userInfo.picture} alt={userInfo.name} style={{width: '40%', margin: '10px'}} />
+                    </Box>
                 </Box>
             </Modal>
         </div>
