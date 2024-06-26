@@ -2,6 +2,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import Badge from '@mui/material/Badge';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
@@ -39,8 +40,9 @@ const Notifications = () => {
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
             >
-                <NotificationsIcon />
-                {notificationsList.length > 0 && <span>{notificationsList.length}</span>}
+                <Badge badgeContent={notificationsList.length} color="primary">
+                    <NotificationsIcon color="action" />
+                </Badge>
             </Button>
             <Menu
                 id="demo-positioned-menu"

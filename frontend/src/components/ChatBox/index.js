@@ -36,7 +36,7 @@ const ChatBox = ({ chatId }) => {
     });
 
     socket.on('message received', (newMessageReceived) => {
-      if (!chatCompare || chatId !== newMessageReceived.chat._id) {
+      if (!chatCompare || chatId !== newMessageReceived.chat._id || !chatId || chatId === "chats") {
         
         if(!notificationsList.includes(newMessageReceived)){
           dispatch(addNotification(newMessageReceived))
