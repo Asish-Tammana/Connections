@@ -20,7 +20,7 @@ const LandingScreen = () => {
   return (
     <Container maxWidth="xl" sx={landingContainer}>
       <Box sx={titleContainer}>
-        <Typography variant='h4'>Connections</Typography>
+        <Typography variant='h4'>C🔆nnecti🌒ns</Typography>
       </Box>
       <GoogleLoginBtn />
     </Container>
