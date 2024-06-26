@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import UpdateGroupModal from '../UpdateGroupModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMessages, sendNewMessage } from '../../actions/messageActions';
+import { addNotification, getMessages, sendNewMessage } from '../../actions/messageActions';
 import io from 'socket.io-client';
 
 const ENDPOINT = "http://localhost:5000";
@@ -23,6 +23,9 @@ const ChatBox = ({ chatId }) => {
   const chatMessages = useSelector((state) => state.chatMessages);
   const { messagesList } = chatMessages;
 
+  const notifications = useSelector((state) => state.notifications);
+  const { notificationsList } = notifications;
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,7 +37,11 @@ const ChatBox = ({ chatId }) => {
 
     socket.on('message received', (newMessageReceived) => {
       if (!chatCompare || chatId !== newMessageReceived.chat._id) {
-        console.log('notify the message');
+        
+        if(!notificationsList.includes(newMessageReceived)){
+          dispatch(addNotification(newMessageReceived))
+        }
+        
       } else {
         setSelectedChatMessages((prevMessages) => [...prevMessages, newMessageReceived]);
       }

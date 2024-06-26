@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material'
 import React from 'react'
 import SideDrawer from '../SideDrawer'
 import ProfileModal from '../ProfileModal'
+import Notifications from '../Notifications'
 
 const Header = () => {
 
@@ -10,6 +11,7 @@ const Header = () => {
       <SideDrawer />
       <Typography>Header</Typography>
       <ProfileModal />
+      <Notifications />
     </Box>
   )
 }

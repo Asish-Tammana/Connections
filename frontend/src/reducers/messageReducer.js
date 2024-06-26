@@ -1,4 +1,4 @@
-import { ADD_MESSAGE_SUCCESS, GET_MESSAGES_FAIL, GET_MESSAGES_REQUEST, GET_MESSAGES_SUCCESS, SEND_MESSAGE_FAIL, SEND_MESSAGE_REQUEST, SEND_MESSAGE_SUCCESS } from "../constants/messageConstants";
+import { ADD_MESSAGE_SUCCESS, ADD_NOTIFICATION_SUCCESS, GET_MESSAGES_FAIL, GET_MESSAGES_REQUEST, GET_MESSAGES_SUCCESS, SEND_MESSAGE_FAIL, SEND_MESSAGE_REQUEST, SEND_MESSAGE_SUCCESS } from "../constants/messageConstants";
 
 export const sendMessageReducer = (state={}, action) => {
     switch (action.type) {
@@ -28,4 +28,14 @@ export const getChatMessageReducer = (state={messagesList: []}, action) =>{
             return state;
     }
 
+}
+
+export const notificationsReducer = (state={notificationsList: []}, action) => {
+
+    switch(action.type){
+        case ADD_NOTIFICATION_SUCCESS:
+            return { notificationsList: [action.payload, ...state.notificationsList] }
+        default:
+            return state;
+    }
 }
