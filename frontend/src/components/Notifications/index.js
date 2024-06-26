@@ -3,12 +3,17 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
+import { removeNotification } from '../../actions/messageActions';
 
 const Notifications = () => {
 
     const notifications = useSelector(state => state.notifications)
     const { notificationsList } = notifications
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -18,6 +23,12 @@ const Notifications = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const goToMessage = (notif) => {
+        handleClose()
+        navigate(`/chats/${notif.chat._id}`)
+        dispatch(removeNotification(notif))
+    }
 
     return (
         <div>
@@ -48,9 +59,9 @@ const Notifications = () => {
             >
                 {notificationsList.length > 0 ? notificationsList.map(each => {
                     return (
-                        <MenuItem onClick={handleClose}>{each.content}</MenuItem>
+                        <MenuItem onClick={() => goToMessage(each)}>{each.sender.name} - {each.content}</MenuItem>
                     )
-                }): <MenuItem>No Notifications</MenuItem>}
+                }) : <MenuItem>No Notifications</MenuItem>}
             </Menu>
         </div>
     )

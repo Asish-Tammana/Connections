@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ADD_MESSAGE_SUCCESS, ADD_NOTIFICATION_SUCCESS, GET_MESSAGES_FAIL, GET_MESSAGES_REQUEST, GET_MESSAGES_SUCCESS, SEND_MESSAGE_FAIL, SEND_MESSAGE_REQUEST, SEND_MESSAGE_SUCCESS } from '../constants/messageConstants';
+import { ADD_MESSAGE_SUCCESS, GET_MESSAGES_FAIL, GET_MESSAGES_REQUEST, GET_MESSAGES_SUCCESS, SEND_MESSAGE_FAIL, SEND_MESSAGE_REQUEST, SEND_MESSAGE_SUCCESS, UPDATE_NOTIFICATION_LIST } from '../constants/messageConstants';
 
 export const sendNewMessage = (messageContent, chatId) => async (dispatch, getState) => {
 
@@ -48,6 +48,29 @@ export const getMessages = (chatId) => async (dispatch, getState) => {
 
 }
 
-export const addNotification = (newMessage) => async(dispatch) => {
-    dispatch({type: ADD_NOTIFICATION_SUCCESS, payload: newMessage})
+export const addNotification = (newMessage) => async(dispatch, getState) => {
+
+    const {notifications} = getState();
+    const {notificationsList} = notifications
+
+    const updatedList = [newMessage, ...notificationsList]
+
+    localStorage.setItem("connectionsNotification", JSON.stringify(updatedList))
+    dispatch({type: UPDATE_NOTIFICATION_LIST, payload: updatedList})
+
+
+
+}
+
+export const removeNotification = (message) => async(dispatch, getState) => {
+
+    const {notifications} = getState();
+    const {notificationsList} = notifications
+
+    const newNotificationsList = notificationsList.filter(notification => notification._id!== message._id)
+
+    dispatch({type: UPDATE_NOTIFICATION_LIST, payload: newNotificationsList})
+
+    localStorage.setItem("connectionsNotification", JSON.stringify(newNotificationsList))
+
 }

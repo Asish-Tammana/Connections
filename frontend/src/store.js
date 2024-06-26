@@ -6,11 +6,11 @@ import { groupReducer, updateGroupReducer, userChatsReducer } from './reducers/c
 import { getChatMessageReducer, notificationsReducer, sendMessageReducer } from './reducers/messageReducer';
 
 const userInfoFromStorage = localStorage.getItem('connectionsUser')? JSON.parse(localStorage.getItem('connectionsUser')) : null
-
+const connectionsNotification = localStorage.getItem('connectionsNotification')? JSON.parse(localStorage.getItem('connectionsNotification')) : []
 
 const initialState = {
     userLogin: {userInfo: userInfoFromStorage},
-    notifications: {notificationsList: []}
+    notifications: {notificationsList: connectionsNotification}
 }
 
 const reducers = combineReducers({
