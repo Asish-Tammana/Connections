@@ -53,14 +53,14 @@ const ChatBox = ({ chatId }) => {
     e.preventDefault();
     const newMsg = await dispatch(sendNewMessage(userMessage, chatId));
     newMsg.content = userMessage;
-    socket.emit('new message', newMsg);
     setSelectedChatMessages((prevMessages) => [...prevMessages, newMsg]);
     setUserMessage('');
+    socket.emit('new message', newMsg);
   };
 
-  const getMessagesFromDatabase = async () => {
+  const getMessagesFromDatabase = () => {
     setLoading(true)
-    await dispatch(getMessages(chatId));
+    dispatch(getMessages(chatId));
     setSelectedChatMessages(messagesList);
     socket.emit('join chat', chatId);
     setLoading(false)
@@ -70,6 +70,7 @@ const ChatBox = ({ chatId }) => {
     if (chatId) {
       setSelectedChatMessages([])
       getMessagesFromDatabase();
+      console.log(chatId);
       chatCompare = chats?.find((chat) => chat._id === chatId);
     }
   }, [chatId, dispatch, chats, messagesList]);
