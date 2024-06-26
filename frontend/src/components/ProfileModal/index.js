@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import PersonIcon from '@mui/icons-material/Person';
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { logout } from '../../actions/userActions'
@@ -41,7 +42,9 @@ const ProfileModal = () => {
 
     return (
         <div>
-            <Button onClick={handleOpen}>Profile</Button>
+            <Button onClick={handleOpen}>
+                <PersonIcon color='secondary' />
+            </Button>
             <Modal
                 open={open}
                 onClose={handleClose}

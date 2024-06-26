@@ -5,13 +5,15 @@ import ProfileModal from '../ProfileModal'
 import Notifications from '../Notifications'
 
 const Header = () => {
-
+  // sx={{ display: 'flex', justifyContent: 'space-around', height: '10vh' }}
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-around', height: '10%' }}>
+    <Box className="flex flex-row justify-between p-2 shadow">
+      <Typography variant='h5'>C🔆nnecti🌒ns</Typography>
+      <Box className='flex justify-around'>
       <SideDrawer />
-      <Typography>Header</Typography>
       <ProfileModal />
       <Notifications />
+      </Box>
     </Box>
   )
 }
