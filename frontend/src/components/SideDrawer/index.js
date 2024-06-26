@@ -9,11 +9,32 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import PersonIcon from '@mui/icons-material/Person';
-import { TextField, Typography } from '@mui/material';
+import { Skeleton, Stack, TextField, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllUsers } from '../../actions/userActions';
 import { createNewChat } from '../../actions/chatActions';
+
+
+const SkeletonContainer = ({ containerHeight }) => {
+  const skeletonHeight = 60; // Height of one Skeleton component in pixels
+  const containerHeightInPx = parseInt(containerHeight, 10); // Convert containerHeight to a number
+
+  const numberOfSkeletons = Math.ceil(containerHeightInPx / skeletonHeight);
+
+  const skeletons = Array.from({ length: numberOfSkeletons });
+
+  return (
+    <div style={{ height: containerHeight }}>
+      {skeletons.map((_, index) => (
+        <Box className="flex justify-between mt-2" >
+          <Skeleton key={index} variant="circular" width={40} height={40} />
+          <Skeleton key={index} variant="rounded" width={180} height={60} />
+        </Box>
+      ))}
+    </div>
+  );
+};
 
 const SideDrawer = () => {
   const [open, setOpen] = useState(false);
@@ -21,7 +42,7 @@ const SideDrawer = () => {
 
   const dispatch = useDispatch()
   const usersList = useSelector(state => state.usersList)
-  const { allUsersList } = usersList;
+  const { loading, allUsersList } = usersList;
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -34,8 +55,13 @@ const SideDrawer = () => {
   const DrawerList = (
     <Box sx={{ width: 250, p: 1, pt: 2 }} role="presentation">
       <TextField id="outlined-basic" label="Search User" variant="outlined" value={userInput} onChange={(e) => setUserInput(e.target.value)} />
-      <Divider />
-      {(userInput !== '' && allUsersList) ? <List>
+      <Divider  />
+
+      {loading && <Stack spacing={2}>
+        <SkeletonContainer containerHeight="90vh" />
+      </Stack>}
+
+      {(userInput !== '' && allUsersList) ? <List className='min-h-80vh'>
         {allUsersList?.map((user) => (
           <ListItem key={user._id}>
             <ListItemButton onClick={() => selectUser(user._id)}>
@@ -48,7 +74,7 @@ const SideDrawer = () => {
         ))}
       </List> : <Box className="min-h-80vh flex flex-col justify-center items-center" >
         <Typography variant='h5'>Search Any User</Typography>
-        </Box>}
+      </Box>}
     </Box>
   );
 
