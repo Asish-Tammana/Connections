@@ -19,7 +19,7 @@ const style = {
     boxShadow: 24,
     p: 4,
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
     flexDirection: 'row',
 
@@ -62,7 +62,7 @@ const ProfileModal = () => {
                         <Button onClick={handleLogout}>Logout</Button>
                     </Box>
                     <Box>
-                        <img src={userInfo.picture} alt={userInfo.name} style={{width: '40%', margin: '10px'}} />
+                        <img src={userInfo.picture} alt={userInfo.name} className='m-2 rounded-full' />
                     </Box>
                 </Box>
             </Modal>

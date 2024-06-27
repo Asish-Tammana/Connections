@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Modal, Typography } from '@mui/material'
+import { Box, Button,  ListItemButton, ListItemIcon, ListItemText, MenuItem, MenuList, Modal, Typography } from '@mui/material'
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
@@ -12,10 +12,11 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    // width: 400,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
+    padding: 3
 }
 
 const UpdateGroupModal = () => {
@@ -88,29 +89,29 @@ const UpdateGroupModal = () => {
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Update Group
                     </Typography>
-                    <input type="text" placeholder='Enter the Group name' value={groupchatName} onChange={(e) => setGroupChatName(e.target.value)} />
-                    <input type="text" placeholder='Add a member' value={userSearchInput} onChange={(e) => setUserSearchInput(e.target.value)} /><br />
+                    <input className='m-2 p-1' type="text" placeholder='Enter the Group name' value={groupchatName} onChange={(e) => setGroupChatName(e.target.value)} />
+                    <input className='m-1 p-1' type="text" placeholder='Add a member' value={userSearchInput} onChange={(e) => setUserSearchInput(e.target.value)} /><br />
 
                     {groupMembers.length !== 0 && <Stack direction="row" spacing={1}>
                         {groupMembers?.map((member) => <Chip key={member._id} label={member.name} variant="outlined" onDelete={() => handleDelete(member._id)} />)}
                     </Stack>
                     }
 
-                    <Button onClick={updateGroupDetails}>Update Group Details</Button>
+                    <Button className='mt-2' onClick={updateGroupDetails}>Update Group Details</Button>
 
-                    {(userSearchInput !== '' && allUsersList) && <List>
+                    {(userSearchInput !== '' && allUsersList) && <MenuList>
                         {allUsersList?.map((user) => (
-                            <ListItem key={user._id}>
+                            <MenuItem key={user._id}>
                                 <ListItemButton onClick={() => userSelected(user)}>
                                     <ListItemIcon>
                                         <PersonSearchIcon />
                                     </ListItemIcon>
                                     <ListItemText primary={user.name} />
                                 </ListItemButton>
-                            </ListItem>
+                            </MenuItem>
                             // change the list to menu during UI change
                         ))}
-                    </List>}
+                    </MenuList>}
 
                     {error && <Typography>{error}</Typography>}
 
