@@ -7,6 +7,7 @@ const userRoutes = require('./routes/userRoutes')
 const chatRoutes = require('./routes/chatRoutes');
 const messageRoutes = require('./routes/messageRoutes');
 const { notFound, errorHandler } = require('./Middlewares/errorMiddleware');
+const path = require('path');
 
 const app = express();
 dotenv.config();
@@ -17,6 +18,15 @@ app.use(cors());
 app.use("/users", userRoutes)
 app.use("/chats", chatRoutes)
 app.use("/messages", messageRoutes)
+
+const __dirname1 = path.resolve()
+
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static(path.join(__dirname1, '/frontend/build')))
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname1, 'frontend', 'build', 'index.html'))
+    })
+}
 
 app.use(notFound)
 app.use(errorHandler)

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "backend": "nodemon backend/server.js",
-    "frontend": "npm start --prefix frontend"
+    "frontend": "npm start --prefix frontend",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "Asish Tammana",
   "license": "ISC",
