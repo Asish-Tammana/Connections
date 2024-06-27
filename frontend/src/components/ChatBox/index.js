@@ -106,9 +106,9 @@ const ChatBox = ({ chatId }) => {
             }
           })}
         </Box>
-        <form onSubmit={sendMessageToReceiver} style={{ display: 'flex', justifyContent: 'space-between', width: '100%', height: '7vh', backgroundColor: 'gray', padding: 3 }}>
+        <form onSubmit={sendMessageToReceiver} style={{ display: 'flex', justifyContent: 'space-between', width: '100%', height: '7vh', backgroundColor: 'pink', padding: 3 }}>
           <input  className="rounded p-1" placeholder="Type something........" type="text" value={userMessage} onChange={(e) => setUserMessage(e.target.value)} />
-          <Button type="submit">Send</Button>
+          <Button variant="contained" color="success" type="submit">Send</Button>
         </form>
     </Box>
   );
